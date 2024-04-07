@@ -4,8 +4,8 @@ const cors = require( "cors");
 
 const app = express();
 const port = process.env.PORT || 3000;
-const pinataApiKey = "59cdbcb0f8254fb2d8ec";
-const pinataSecretApiKey = "8d3d5cf55cd108ce4d04e06d038d0412f263a7ac9e19744e40cdc278f60f5ee0";
+const pinataApiKey = "952edca779336903e0b8";
+const pinataSecretApiKey = "360f4ef0c61355169235f315bba5a3c00430828022a26f1102453ad624223985";
 const reladd = "0x25AAC613049F56779064905749F18A0423447115";
 const conadd = "0x6b8bf66290cC88e594FBF8e8cb7E75D5e26F3673";
 
@@ -18,38 +18,30 @@ app.use(cors())
 app.get("/request-ipfs-data", async (req, res) => {
 
     const data = JSON.stringify({
-        "pinataOptions": {
-            "cidVersion": 1
-        },
-        "pinataMetadata": {
-            "name": "testing",
-            "keyvalues": {
-                "address": "addressvalue",
-
-            }
-        },
-        "pinataContent": {
-            "realestate contract address": `${reladd}`,
-            "contract contract address": `${conadd}`,
-
-        }
+        name : "disha"
     });
+    // const data = req.body()
 
     const config = {
-        method: 'post',
-        url: 'https://api.pinata.cloud/pinning/pinJSONToIPFS',
         headers: {
             'Content-Type': 'application/json',
-            pinata_api_key: pinataApiKey,
-            pinata_secret_api_key: pinataSecretApiKey,
+            'pinata_api_key': pinataApiKey.toString(),
+            'pinata_secret_api_key': pinataSecretApiKey.toString(),
         },
         body: data
     };
-    const response = await axios(config);
+    const response = await axios.post('https://api.pinata.cloud/pinning/pinJSONToIPFS',data,{
+        headers: {
+            'Content-Type': 'application/json',
+            'pinata_api_key': pinataApiKey.toString(),
+            'pinata_secret_api_key': pinataSecretApiKey.toString(),
+        }
+    });
+    console.log(response.data)
 
     const Url = "https://ipfs.io/ipfs/" + response.data.IpfsHash;
-
-    console.log(Url);
+    console.log("hello")
+    // console.log(Url);
 
     res.json([{
         message: "Successful",
